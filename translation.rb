@@ -21,15 +21,33 @@ end
 language = File.read('language.json')
 language_hash = JSON[language]
 
-print 'Enter the phrase you with to translate: '
+print 'Enter the phrase you want to translate: '
 phrase = gets.chomp
+
+if phrase.empty?
+    puts "***** ERROR: The given phrase is empty. *****"
+    return
+end
+
 print 'Enter the input language: '
 fromLanguageValue = gets.chomp
+
+if language_hash.has_key?(fromLanguageValue)
+    fromLanguage = language_hash[fromLanguageValue.downcase]
+else 
+    puts "***** ERROR: The given input language is invalid. *****"
+    return
+end
+
 print 'Enter the output language: '
 toLanguageValue = gets.chomp
 
-fromLanguage = language_hash[fromLanguageValue.downcase]
-toLanguage = language_hash[toLanguageValue.downcase]
+if language_hash.has_key?(toLanguageValue)
+    toLanguage = language_hash[toLanguageValue.downcase]
+else
+    puts "***** ERROR: The given output language is invalid. *****"
+    return
+end
 
 translatable = Translatable.new(phrase, fromLanguage, toLanguage)
 fileName = Time.now.strftime("%d-%m-%y_%H-%M.txt")
